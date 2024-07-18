@@ -34,7 +34,7 @@ First, run the production server:
 ```bash
 docker-compose up -d
 ```
-
+(Takes 1-2 mins to setup.)
 ```bash
  docker-compose -f docker-compose-dev.yml up
  ```
