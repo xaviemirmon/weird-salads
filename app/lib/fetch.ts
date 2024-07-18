@@ -9,17 +9,16 @@ export type MenuType = {
   outOfStock: boolean;
 }[];
 
-
 export type RecipeIngredientType = {
-    quantity: number
-    ingredient_id: number
-}
+  quantity: number;
+  ingredient_id: number;
+};
 
 export type RecipeType = {
-    id: number;
-    name: string;
-    data: RecipeIngredientType[]
-  };
+  id: number;
+  name: string;
+  data: RecipeIngredientType[];
+};
 
 export type IngredientType = {
   ingredient_id: number;
@@ -33,7 +32,7 @@ export type IngredientsType = IngredientType[];
 export type FetchPostResponseType = {
   data?: {
     message?: string;
-    error?:  string;
+    error?: string;
   };
 };
 
@@ -45,9 +44,7 @@ export const fetchPostIngredientsData = async <T>(data: any) => {
   return fetchData<T>(`ingredients`, "POST", data);
 };
 
-export const fetchPostOrderData = async <T>(
-  data: any,
-) => {
+export const fetchPostOrderData = async <T>(data: any) => {
   return fetchData<T>(`order`, "POST", data);
 };
 

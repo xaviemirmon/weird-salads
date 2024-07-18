@@ -21,7 +21,7 @@ export default function Home() {
   const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     setIsSubmitting(true);
     const button = event.target as HTMLButtonElement;
-    const response:FetchPostResponseType = await fetchPostOrderData(
+    const response: FetchPostResponseType = await fetchPostOrderData(
       JSON.stringify({ recipe_id: parseInt(button.id) }),
     );
 

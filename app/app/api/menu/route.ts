@@ -1,4 +1,9 @@
-import { IngredientType, MenuType, RecipeIngredientType, RecipeType } from "@/lib/fetch";
+import {
+  IngredientType,
+  MenuType,
+  RecipeIngredientType,
+  RecipeType,
+} from "@/lib/fetch";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -13,10 +18,9 @@ export async function GET() {
       where: { location_id: locationId },
       select: { recipe_id: true, price: true, modifiers: true },
     });
-    
 
-    const recipeIds = menus.map(menu => menu.recipe_id);
-    
+    const recipeIds = menus.map((menu) => menu.recipe_id);
+
     // Get ingredients and quantities from recipes table
     const recipes = await prisma.recipes.findMany({
       where: { id: { in: recipeIds } },
@@ -35,34 +39,40 @@ export async function GET() {
     });
     // Map ingredients to their amounts
     const ingredientMap = Object.fromEntries(
-      ingredients.map((ingredient: IngredientType) => [ingredient.ingredient_id, ingredient.amount])
+      ingredients.map((ingredient: IngredientType) => [
+        ingredient.ingredient_id,
+        ingredient.amount,
+      ]),
     );
 
     // Map recipes to their details
     const recipeMap = Object.fromEntries(
-      recipes.map((recipe: RecipeType ) => [
+      recipes.map((recipe: RecipeType) => [
         recipe.id,
         { name: recipe.name, ingredients: recipe.data },
-      ])
+      ]),
     );
 
     // Generate menu data
     const menuData = menus.map((menu) => {
       const recipeDetails = recipeMap[menu.recipe_id] || {};
       const recipeIngredients = recipeDetails.ingredients || [];
-      const outOfStock = recipeIngredients.some((recipeIngredient: RecipeIngredientType) => {
-        const ingredientStock = ingredientMap[recipeIngredient.ingredient_id] || 0;
-        return ingredientStock < recipeIngredient.quantity;
-      });
+      const outOfStock = recipeIngredients.some(
+        (recipeIngredient: RecipeIngredientType) => {
+          const ingredientStock =
+            ingredientMap[recipeIngredient.ingredient_id] || 0;
+          return ingredientStock < recipeIngredient.quantity;
+        },
+      );
 
-  return {
-    name: recipeDetails.name,
-    price: menu.price ? menu.price.toFixed(2) : null,
-    recipe_id: menu.recipe_id,
-    allergens: menu.modifiers === 2,
-    outOfStock: outOfStock,
-  };
-});
+      return {
+        name: recipeDetails.name,
+        price: menu.price ? menu.price.toFixed(2) : null,
+        recipe_id: menu.recipe_id,
+        allergens: menu.modifiers === 2,
+        outOfStock: outOfStock,
+      };
+    });
 
     return new Response(JSON.stringify(menuData));
   } catch (error) {

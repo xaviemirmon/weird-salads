@@ -19,13 +19,12 @@ export async function POST(request: NextRequest) {
     const recipeCost = await prisma.menus.findFirst({
       where: {
         recipe_id: recipe_id,
-        location_id: locationId
+        location_id: locationId,
       },
       select: {
-        price: true
-      }
+        price: true,
+      },
     });
-
 
     for (const item of recipe.data) {
       const { ingredient_id, quantity } = item;
@@ -58,7 +57,7 @@ export async function POST(request: NextRequest) {
         amount: recipeCost.price,
       },
     });
-  
+
     return new Response(JSON.stringify({ message: `Ordered! #${order.id}` }));
   } catch (error) {
     return new Response(
