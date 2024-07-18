@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model deliveries {
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  ingredients Json
+}
+
+model ingredients {
+  ingredient_id Int      @id @default(autoincrement())
+  name          String   @db.VarChar(255)
+  unit          String   @db.VarChar(50)
+  cost          Decimal  @db.Decimal(10, 2)
+  amount        Decimal? @db.Decimal
+}
+
+model locations {
+  location_id Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  address     String
+}
+
+model menus {
+  id          Int      @id @default(autoincrement())
+  recipe_id   Int
+  location_id Int
+  price       Decimal? @db.Decimal(10, 2)
+  modifiers   Int?
+}
+
+model modifiers {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+  data Json
+}
+
+model recipes {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+  data Json
+}
+
+model staff {
+  id          Int       @id @default(autoincrement())
+  staff_id    Int
+  name        String?   @db.VarChar(255)
+  dob         DateTime? @db.Date
+  role        String?   @db.VarChar(255)
+  iban        String?   @db.VarChar(34)
+  bic         String?   @db.VarChar(11)
+  location_id Int?
+}
+
+model orders {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  amount     Decimal? @db.Decimal
+}
