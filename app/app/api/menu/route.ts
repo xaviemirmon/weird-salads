@@ -14,12 +14,12 @@ export async function GET() {
 
   try {
     // Get recipe_ids from menus table
-    const menus: MenuType = await prisma.menus.findMany({
+    const menus = await prisma.menus.findMany({
       where: { location_id: locationId },
       select: { recipe_id: true, price: true, modifiers: true },
     });
 
-    const recipeIds = menus.map((menu) => menu.recipe_id);
+    const recipeIds = menus.map((menu: any) => menu.recipe_id);
 
     // Get ingredients and quantities from recipes table
     const recipes = await prisma.recipes.findMany({
@@ -28,7 +28,7 @@ export async function GET() {
     });
 
     // Flatten the data to get all ingredient IDs
-    const ingredientIds = recipes.flatMap((recipe: { data: any[] }) =>
+    const ingredientIds = recipes.flatMap((recipe: any) =>
       recipe.data.map((item: { ingredient_id: string }) => item.ingredient_id),
     );
 
@@ -39,7 +39,7 @@ export async function GET() {
     });
     // Map ingredients to their amounts
     const ingredientMap = Object.fromEntries(
-      ingredients.map((ingredient: IngredientType) => [
+      ingredients.map((ingredient: any) => [
         ingredient.ingredient_id,
         ingredient.amount,
       ]),
@@ -47,14 +47,14 @@ export async function GET() {
 
     // Map recipes to their details
     const recipeMap = Object.fromEntries(
-      recipes.map((recipe: RecipeType) => [
+      recipes.map((recipe: any) => [
         recipe.id,
         { name: recipe.name, ingredients: recipe.data },
       ]),
     );
 
     // Generate menu data
-    const menuData = menus.map((menu) => {
+    const menuData = menus.map((menu: any) => {
       const recipeDetails = recipeMap[menu.recipe_id] || {};
       const recipeIngredients = recipeDetails.ingredients || [];
       const outOfStock = recipeIngredients.some(

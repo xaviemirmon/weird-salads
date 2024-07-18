@@ -32,7 +32,7 @@ POSTGRES_PASSWORD=password
 First, run the production server:
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
 
 ```bash

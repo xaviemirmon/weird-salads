@@ -1,3 +1,4 @@
+import { RecipeIngredientType, RecipeType } from "@/lib/fetch";
 import { prisma } from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -15,7 +16,9 @@ export async function GET() {
       select: { recipe_id: true },
     });
 
-    const recipeIds = menus.map((menu: { recipe_id: any }) => menu.recipe_id);
+    const recipeIds = menus.map(
+      (menu: { recipe_id: number }) => menu.recipe_id,
+    );
 
     // Get ingredients and quantities from recipes table
     const recipes = await prisma.recipes.findMany({
@@ -24,8 +27,8 @@ export async function GET() {
     });
 
     // Flatten the data to get all ingredient IDs
-    const ingredientIds = recipes.flatMap((recipe: { data: any[] }) =>
-      recipe.data.map((item: { ingredient_id: any }) => item.ingredient_id),
+    const ingredientIds = recipes.flatMap((recipe: any) =>
+      recipe.data.map((item: { ingredient_id: number }) => item.ingredient_id),
     );
 
     // Get ingredients from ingredients table

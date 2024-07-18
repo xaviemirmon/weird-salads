@@ -46,6 +46,7 @@ export default function IngredientsTable({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!loading) {
       tempstore.current = data;
