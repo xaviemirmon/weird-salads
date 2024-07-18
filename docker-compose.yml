@@ -3,7 +3,7 @@ services:
     image: node:22
     ports:
       - "8000:3000"
-    command: "npm run build && npm run start"
+    command: sh -c "npm install && npm run build && npm run start"
     working_dir: /app
     volumes:
       - ./app:/app
