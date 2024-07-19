@@ -54,8 +54,8 @@ export default function IngredientsTable({
   }, [loading]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const targetIngredientId = parseInt(event.target.id);
-    const newAmount = parseInt(event.target.value ? event.target.value : "0");
+    const targetIngredientId = parseFloat(event.target.id);
+    const newAmount = parseFloat(event.target.value ? event.target.value : "0");
 
     // Use find to locate the object with the matching ingredient_id
     if (tempstore.current) {

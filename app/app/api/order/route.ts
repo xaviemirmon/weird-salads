@@ -42,14 +42,11 @@ export async function POST(request: NextRequest) {
               ingredient_id: ingredient_id as number,
             },
           });
-
-          if (
-            ingredient &&
-            typeof ingredient.amount === "number" &&
-            typeof quantity === "number"
-          ) {
+          if (ingredient && ingredient.amount) {
             // Calculate the new amount
-            const newAmount = ingredient.amount - quantity;
+            const newAmount =
+              parseFloat(ingredient.amount as unknown as string) -
+              parseFloat(quantity as unknown as string);
 
             // Update the ingredient with the new amount
             await prisma.ingredients.update({
@@ -72,7 +69,6 @@ export async function POST(request: NextRequest) {
         },
       });
     }
-
     return new Response(
       JSON.stringify({ message: `Ordered! #${order && order.id}` }),
     );
