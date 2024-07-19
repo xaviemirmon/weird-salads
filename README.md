@@ -27,14 +27,15 @@ LOCATION_ID=2
 POSTGRES_PASSWORD=password
 ```
 
-(Note: Location ID should be changed to any locations avaible)
+(Note: Location ID should be changed to any of the locations available)
 
-First, run the production server:
+First, run the production server (takes 1-2 mins to setup):
 
 ```bash
 docker-compose up -d
 ```
-(Takes 1-2 mins to setup.)
+
+Or if you want to run in dev mode:
 ```bash
  docker-compose -f docker-compose-dev.yml up
  ```
